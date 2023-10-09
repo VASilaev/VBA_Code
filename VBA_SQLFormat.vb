@@ -56,20 +56,27 @@ Public Function printf(ByVal mask As String, ParamArray tokens()) As String
   printf = mask
 End Function
 
-Public Function SelectOneRow(byval sql As String, ParamArray params()) As Variant
-  Dim rsdao, objField
-  if UBound(params) >= 0 then 
-    sql = printf(sql, params)
-  end if    
-  Set SelectOneRow = CreateObject("Scripting.Dictionary")
-  SelectOneRow.CompareMode = 1 ' 1 = TextCompare
-  Set rsdao = CurrentProject.Connection.Execute(sql)
-  If Not rsdao.EOF Then
-   For Each objField In rsdao.Fields
-    SelectOneRow.Add objField.Name, objField.Value
-   Next
-  End If
-  Set objField = Nothing
-  rsdao.Close
-  Set rsdao = Nothing
+Public Function MaxDate(Optional vvDefault = Null) As Date
+ If IsNull(vvDefault) Then
+  MaxDate = #1/1/2100#
+ Else
+  MaxDate = vvDefault
+ End If
 End Function
+
+Public Function MinDate(Optional vvDefault = Null) As Date
+ If IsNull(vvDefault) Then
+  MinDate = #1/1/1900#
+ Else
+  MinDate = vvDefault
+ End If
+End Function
+
+'Use NZ
+Public Function NVL(condition, Value)
+ If IsNull(condition) Then NVL = Value Else NVL = condition
+End Function        
+
+Public Function bitAnd(o1 As Long, o2 As Long) As Long
+ bitAnd = o1 And o2
+End Function          
