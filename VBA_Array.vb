@@ -64,3 +64,14 @@ Function ArrayToLiteral(spArr)
   Next
 End Function
 
+'Возвращает истину если Value присутствует в массиве arr
+Function InA(Value, arr)
+Dim Item
+InA = False
+For Each Item In arr
+   If Item = Value Then
+     InA = True
+     Exit Function
+   End If
+Next
+End Function
