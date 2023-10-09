@@ -64,18 +64,3 @@ Function ArrayToLiteral(spArr)
   Next
 End Function
 
-
-Public Function SelectOneRow(sql As String) As Variant
- Dim rsdao, objField
- Set SelectOneRow = CreateObject("Scripting.Dictionary")
- SelectOneRow.CompareMode = 1 ' 1 = TextCompare
- Set rsdao = CurrentProject.Connection.Execute(sql)
- If Not rsdao.EOF Then
-  For Each objField In rsdao.Fields
-   SelectOneRow.Add objField.Name, objField.Value
-  Next
- End If
- Set objField = Nothing
- rsdao.Close
- Set rsdao = Nothing
-End Function
