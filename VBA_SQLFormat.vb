@@ -15,21 +15,20 @@ Public Function StrToSQL(pText)
   StrToSQL = "'" & Replace(pText, "'", "''") & "'"
 End Function
 
-Public Function ToSQL(Val)
-    Select Case VarType(Val)
-      Case 8
-        ToSQL = StrToSQL(Val)
-      Case 7
-        ToSQL = DateToSQL(Val)
-      Case 0,1
-        ToSQL = "NULL"
-      Case 11
-        If Val Then ToSQL = "true" Else ToSQL = "false"
-      Case Else
-        ToSQL = Val & ""
-      End Select
+Public Function ToSQL(pValue)
+  Select Case VarType(pValue)
+    Case 8
+      ToSQL = StrToSQL(pValue)
+    Case 7
+      ToSQL = DateToSQL(pValue)
+    Case 0, 1
+      ToSQL = "NULL"
+    Case 11
+      If pValue Then ToSQL = "true" Else ToSQL = "false"
+    Case Else
+      ToSQL = Replace(pValue & "", ",", ".")
+  End Select
 End Function
-
 
 Public Function printf(ByVal mask As String, ParamArray tokens()) As String
   Dim i As Long, T
