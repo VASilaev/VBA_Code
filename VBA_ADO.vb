@@ -1,3 +1,5 @@
+''Link: https://evona.nl/simple-parameterized-queries-using-ado-in-vba/
+
 Public Function getConn() As ADODB.Connection
     'Returns an opened ADODB.Connection using a client-side cursor
     Set getConn = New ADODB.Connection
