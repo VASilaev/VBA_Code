@@ -17,16 +17,21 @@ End Function
 
 Public Function ToSQL(pValue)
   Select Case VarType(pValue)
-    Case 8
+    Case vbString
       ToSQL = StrToSQL(pValue)
-    Case 7
+    Case vbDate
       ToSQL = DateToSQL(pValue)
-    Case 0, 1
+    Case vbEmpty, vbNull
       ToSQL = "NULL"
-    Case 11
+    Case vbBoolean
       If pValue Then ToSQL = "true" Else ToSQL = "false"
-    Case Else
+    Case vbInteger, vbLong, 20
+      ToSQL = pValue & ""
+    Case vbSingle,vbDouble,vbCurrency, vbDecimal
       ToSQL = Replace(pValue & "", ",", ".")
+    'vbByte ?? char
+    Case Else
+      err.rise 1001,,"Unsupported type of SQL value!"
   End Select
 End Function
 
