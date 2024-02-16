@@ -16,11 +16,19 @@ Public Function StrToSQL(pText)
 End Function
 
 Public Function ToSQL(pValue)
+'На основе типа данных преобразует значение в SQL литерал
+'#param pValue - Значение для преобразования
   Select Case VarType(pValue)
     Case vbString
-      ToSQL = StrToSQL(pValue)
+      ToSQL = "'" & Replace(pValue, "'", "''") & "'"
     Case vbDate
-      ToSQL = DateToSQL(pValue)
+      If pValue = CLng(pValue) Then
+        ToSQL = "#" & Format(pValue, "mm\/dd\/yyyy") & "#"
+      ElseIf pValue < 1 Then
+        ToSQL = "#" & Format(pValue, "hh:nn:ss") & "#"
+      Else
+        ToSQL = "#" & Format(pValue, "mm\/dd\/yyyy hh:nn:ss") & "#"
+      End If
     Case vbEmpty, vbNull
       ToSQL = "NULL"
     Case vbBoolean
@@ -31,11 +39,30 @@ Public Function ToSQL(pValue)
       ToSQL = Replace(pValue & "", ",", ".")
     'vbByte ?? char
     Case Else
-      err.rise 1001,,"Unsupported type of SQL value!"
+      if isArray(pValue) then 
+        dim vElement
+        ToSQL = ""
+        for each vElement in pValue
+          if len(ToSQL) = 0 then 
+            ToSQL = ToSQL(vElement) 
+          else 
+            ToSQL = ToSQL & ", " & ToSQL(vElement)  
+          end if
+        next
+        if ToSQL ="" then ToSQL = "NULL"
+      else
+        err.rise 1001,,"Unsupported type of SQL value!"
+      end if
   End Select
 End Function
 
 Public Function printf(ByVal mask As String, ParamArray tokens()) As String
+'Вставляет в текст значения параметров. Параметр задается своим номером заключенным в фигурные скобки
+'#param mask - Строка для форматирования. 
+'  Место вставки укажите в формате {0}, {1}... где число - это индекс передаваемого параметра
+'  Если указать в формате {0;SQL}, {1;SQL}... то значение будет отформатировано в SQL литерал
+'#param tokens - список значений для подстановки. Если единственным параметром передать массив, то он будет развернут. 
+'  Для Предотвращения данного поведения, передйте дополнительный параметр 
   Dim i As Long, T
   T = tokens
   If UBound(T) = 0 Then If IsArray(T(0)) Then T = T(0)
@@ -43,7 +70,6 @@ Public Function printf(ByVal mask As String, ParamArray tokens()) As String
       mask = Replace$(mask, "{" & i & "}", T(i))
   Next
   If InStr(mask, "{") > 0 Then
-    'Дополнительная обработка по маске
     With CreateObject("VBScript.RegExp")
       .Global = True
       .pattern = "\{(\d+)\s*;([^\}]*)\}"

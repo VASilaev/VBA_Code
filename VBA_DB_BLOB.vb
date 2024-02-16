@@ -1,9 +1,9 @@
 
 Function ReadBLOB(sSource As String, tRecordSet As Recordset, sField As String)
-'Ñ÷èòûâàåò BLOB çíà÷åíèå èç ôàéëà â íàáîð äàííûõ è âîçâðàùåò ÷èñëî ñ÷èòàííûõ áàéò
-'#param sSource: Èìÿ ôàéëà êóäà áóäåò çàïèñàíî çíà÷åíèå
-'#param tRecordSet: Íàáîð äàííûõ ñïîçèöèîíèðîâàííûé íà íóæíîé ñòðîêå
-'#param sField: Èìÿ ïîëÿ â êîòîðîå íóæíî ñîõðàíèòü äàííûå
+'Записывает двоичный файл в набор данных
+'#param sSource: Имя файла для записи
+'#param tRecordSet: набор данных спозиционированный на нужной строке
+'#param sField: Имя поля
 
     Dim NumBlocks As Integer, SourceFile As Integer, i As Integer
     Dim FileLength As Long, LeftOver As Long
@@ -48,10 +48,10 @@ End Function
 
 
 Function WriteBLOB(tRecordSet As Recordset, sField As String, sDestination As String)
-'Ñîõðàíÿåò BLOB çíà÷åíèå èç íàáîðà äàííûõ â ôàéë è âîçâðàùåò ÷èñëî çàïèñàííûõ áàéò
-'#param tRecordSet: Íàáîð äàííûõ ñïîçèöèîíèðîâàííûé íà íóæíîé ñòðîêå
-'#param sField: Èìÿ ïîëÿ èç êîòîðîãî íóæíî ñîõðàíèòü äàííûå
-'#param sDestination: Èìÿ ôàéëà êóäà áóäåò çàïèñàíî çíà÷åíèå
+'Считывает двоичное поле и записывает его в файл
+'#param tRecordSet: набор данных спозиционированный на нужной строке
+'#param sField: Имя поля
+'#param sDestination: имя файла для сохранения
 
     Dim NumBlocks As Integer, DestFile As Integer, i As Integer
     Dim FileLength As Long, LeftOver As Long
