@@ -12,7 +12,7 @@ Public Function GetRegExp(ByVal spPattern)
 '          С модификатором соответствуют началу концу подстрок (разделенных по символу перевода строк).
   If IsNull(spPattern) Then spPattern = ""
   Static regexp, svPatternPrev
-  If svPatternPrev = spPattern Then
+  If Not IsEmpty(svPatternPrev) And svPatternPrev = spPattern Then
     Set GetRegExp = regexp
   Else
     svPatternPrev = spPattern
