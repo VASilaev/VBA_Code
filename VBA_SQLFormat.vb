@@ -67,7 +67,7 @@ Public Function printf(ByVal mask As String, ParamArray tokens()) As String
   T = tokens
   If UBound(T) = 0 Then If IsArray(T(0)) Then T = T(0)
   For i = 0 To UBound(T)
-      mask = Replace$(mask, "{" & i & "}", T(i))
+      mask = Replace$(mask, "{" & i & "}", nz(T(i),""))
   Next
   If InStr(mask, "{") > 0 Then
     With CreateObject("VBScript.RegExp")
